@@ -4,6 +4,7 @@ import Search from "../../Component/SearchBar/Search.jsx";
 import TableComp from "../../Component/Table/TableComp.jsx";
 import { useEffect } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Stock = (props) => {
   const [medicineName, setMedicineName] = useState("");
