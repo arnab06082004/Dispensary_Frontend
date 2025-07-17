@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./ManageEvent.css";
+import "./manageEvent.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
