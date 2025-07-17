@@ -8,19 +8,23 @@ import StudentModel from "./StudentModel/StudentModel";
 const StudentDashboard = (props) => {
   const [model, setModel] = useState(false);
   const [data, setData] = useState([]);
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState([]);
 
   const handelOnOff = (data) => {
     setModel((prev) => !prev);
-    setHistory(data)
+    setHistory(data);
   };
 
   const fetchData = async () => {
     props.showLoader();
     axios
-      .get(`http://localhost:4000/api/history/get?roll=${user?.roll}`, {
-        withCredentials: true,
-      })
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/history/get?roll=${user?.roll}`,
+        {
+          withCredentials: true,
+        }
+      )
+
       .then((res) => {
         setData(res.data.sHistory);
       })
@@ -53,8 +57,8 @@ const StudentDashboard = (props) => {
           <div>Date</div>
         </div>
         <div className="s-d-t-items">
-          
-            {data?data.map((item, index) => (
+          {data ? (
+            data.map((item, index) => (
               <div key={index} className="s-d-t-item">
                 <div>
                   <VisibilityIcon
@@ -62,13 +66,14 @@ const StudentDashboard = (props) => {
                     onClick={() => handelOnOff(item)}
                   />
                 </div>
-                <div>{item.createdAt
-                  .slice(0, 10)
-                  .split("-")
-                  .reverse()
-                  .join("-")}</div>
+                <div>
+                  {item.createdAt.slice(0, 10).split("-").reverse().join("-")}
+                </div>
               </div>
-            )) : <div className="s-d-t-item"> No records found</div>}
+            ))
+          ) : (
+            <div className="s-d-t-item"> No records found</div>
+          )}
         </div>
       </div>
 
@@ -76,10 +81,9 @@ const StudentDashboard = (props) => {
         <Model
           header={"Details"}
           handelClose={handelOnOff}
-          children={<StudentModel history = {history}  />}
+          children={<StudentModel history={history} />}
         />
       )}
-     
     </div>
   );
 };

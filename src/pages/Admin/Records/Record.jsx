@@ -17,8 +17,8 @@ const Record = (props) => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
   const [model, setModel] = useState(false);
   const [selectedHistory, setSelectedHistory] = useState([]);
-  const [allModel, setAllModel] = useState(false)
-  const [allHistory, setAllHistory] = useState([])
+  const [allModel, setAllModel] = useState(false);
+  const [allHistory, setAllHistory] = useState([]);
 
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth(); // 0 = Jan, 11 = Dec
@@ -70,18 +70,18 @@ const Record = (props) => {
   };
 
   const myClick = () => {
-    setAllModel((prev) => !prev)
-  }
+    setAllModel((prev) => !prev);
+  };
 
   const fetchData = async () => {
     props.showLoader();
     axios
       .get(
-        `http://localhost:4000/api/history/get-history?month=${selectedMonth + 1}&year=${selectedYear}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/history/get-history?month=${selectedMonth + 1}&year=${selectedYear}`,
         { withCredentials: true }
       )
+
       .then((res) => {
-       
         setData(res.data.histories);
       })
       .catch((err) => {
@@ -103,14 +103,16 @@ const Record = (props) => {
       return toast.error("Please enter valid roll no");
     props.showLoader();
     axios
-      .get(`http://localhost:4000/api/history/get?roll=${studentRoll}`, {
-        withCredentials: true,
-      })
+      .get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/history/get?roll=${studentRoll}`,
+        {
+          withCredentials: true,
+        }
+      )
+
       .then((res) => {
-        
         setAllHistory(res.data.sHistory);
-        setAllModel(true)
-        
+        setAllModel(true);
       })
       .catch((err) => {
         toast.error(err?.response?.data?.error);
@@ -203,14 +205,13 @@ const Record = (props) => {
         />
       )}
 
-      {allModel &&  <Model
+      {allModel && (
+        <Model
           header={"Records"}
-          children={<AllRecordModel allHistory = {allHistory}/>}
+          children={<AllRecordModel allHistory={allHistory} />}
           handelClose={myClick}
-          
-        />}
-
-   
+        />
+      )}
     </div>
   );
 };

@@ -36,27 +36,27 @@ const AddGalleryModel = (props) => {
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
         formData
       );
-      
+
       const uploadedUrl = response.data.secure_url;
       setData(response.data.secure_url);
 
-        props.showLoader()
-        await axios
-          .post(
-            "http://localhost:4000/api/gallery/add",
-            { link: uploadedUrl },
-            { withCredentials: true }
-          )
-          .then((res) => {toast.success("Image added successfully")
-            props.fetchData()
-          })
-          .catch((err) => {
-            toast.error(err?.data?.response?.error);
-          })
-          .finally(() => {
-            props.hideLoader();
-          });
-      
+      props.showLoader();
+      await axios
+        .post(
+          `${import.meta.env.VITE_BACKEND_URL}/api/gallery/add`,
+          { link: uploadedUrl },
+          { withCredentials: true }
+        )
+        .then((res) => {
+          toast.success("Image added successfully");
+          props.fetchData();
+        })
+        .catch((err) => {
+          toast.error(err?.data?.response?.error);
+        })
+        .finally(() => {
+          props.hideLoader();
+        });
 
       // Small delay for UX
       setTimeout(() => {
@@ -85,12 +85,7 @@ const AddGalleryModel = (props) => {
 
         {previewUrl && (
           <div className="a-g-preview">
-            <img
-              src={previewUrl}
-              alt="Preview"
-              className="preview-img"
-              
-            />
+            <img src={previewUrl} alt="Preview" className="preview-img" />
           </div>
         )}
 
@@ -117,7 +112,6 @@ const AddGalleryModel = (props) => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

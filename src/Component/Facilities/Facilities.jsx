@@ -8,12 +8,12 @@ import ListItem from "@mui/material/ListItem";
 
 const Facilities = (props) => {
   const [data, setData] = useState([]);
-
+const backendURL = import.meta.env.VITE_BACKEND_URL;
   useEffect(() => {
     props.showLoader()
     const fetchData = async () => {
       await axios
-        .get("http://localhost:4000/api/facility/get")
+        .get(`${backendURL}/api/facility/get`)
         .then((res) => {
           setData(res.data.facility);
         })

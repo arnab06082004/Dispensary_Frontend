@@ -18,61 +18,62 @@ const Header = (props) => {
   const [events, setEvents] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-const handleOpenDropdown = (type) => {
-  if (type === "event") setEventPopup(true);
-  else if (type === "helpline") setHelplinePopup(true);
-};
+  const handleOpenDropdown = (type) => {
+    if (type === "event") setEventPopup(true);
+    else if (type === "helpline") setHelplinePopup(true);
+  };
 
-const handleCloseDropdown = (type) => {
-  if (type === "event") setEventPopup(false);
-  else if (type === "helpline") setHelplinePopup(false);
-};
+  const handleCloseDropdown = (type) => {
+    if (type === "event") setEventPopup(false);
+    else if (type === "helpline") setHelplinePopup(false);
+  };
 
-const toggleMobileMenu = () => {
-  setIsMobileMenuOpen(!isMobileMenuOpen);
-};
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
-const closeMobileMenu = () => {
-  setIsMobileMenuOpen(false);
-  // Also close any open dropdowns when closing mobile menu
-  setEventpopup(false);
-  setHelplinePopup(false);
-};
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+    // Also close any open dropdowns when closing mobile menu
+    setEventpopup(false);
+    setHelplinePopup(false);
+  };
 
-// Check if we're on mobile (you can adjust the breakpoint as needed)
-const isMobile = () => {
-  return window.innerWidth <= 768;
-};
+  // Check if we're on mobile (you can adjust the breakpoint as needed)
+  const isMobile = () => {
+    return window.innerWidth <= 768;
+  };
 
-// Mobile-specific handlers for event and helpline
-const handleMobileEventClick = () => {
-  if (isMobile()) {
-    setEventpopup(!eventPopup);
-  }
-};
+  // Mobile-specific handlers for event and helpline
+  const handleMobileEventClick = () => {
+    if (isMobile()) {
+      setEventpopup(!eventPopup);
+    }
+  };
 
-const handleMobileHelplineClick = () => {
-  if (isMobile()) {
-    setHelplinePopup(!helplinePopup);
-  }
-};
+  const handleMobileHelplineClick = () => {
+    if (isMobile()) {
+      setHelplinePopup(!helplinePopup);
+    }
+  };
 
-// Mobile-specific handlers for dropdown items
-const handleMobileDropdownItemClick = () => {
-  if (isMobile()) {
-    closeMobileMenu();
-  }
-};
+  // Mobile-specific handlers for dropdown items
+  const handleMobileDropdownItemClick = () => {
+    if (isMobile()) {
+      closeMobileMenu();
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       await axios
-        .get("http://localhost:4000/api/notification/get")
+        .get(`${import.meta.env.VITE_BACKEND_URL}/api/notification/get`)
+
         .then((response) => {
           setEvents(response.data.notif);
         })
         .catch((err) => {
-          toast.error(err?.response?.data?.error)
+          toast.error(err?.response?.data?.error);
         });
     };
     fetchData();
@@ -103,7 +104,7 @@ const handleMobileDropdownItemClick = () => {
   const handleLogout = async () => {
     props.showLoader();
     await axios
-      .post("http://localhost:4000/api/auth/logout")
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/logout`)
       .then(() => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -194,7 +195,9 @@ const handleMobileDropdownItemClick = () => {
           {isMobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
         </div>
 
-        <div className={`navbar-container ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`}>
+        <div
+          className={`navbar-container ${isMobileMenuOpen ? "mobile-menu-open" : ""}`}
+        >
           <Link
             to={"/"}
             className={`navbar-links ${location.pathname === "/" ? "active-link" : null}`}
@@ -235,8 +238,8 @@ const handleMobileDropdownItemClick = () => {
             {eventPopup && (
               <div className="navbar-dropdown-popup event-pop">
                 {events.map((item, index) => (
-                  <div 
-                    className="popup-notification" 
+                  <div
+                    className="popup-notification"
                     key={index}
                     onClick={handleMobileDropdownItemClick}
                   >
@@ -266,19 +269,34 @@ const handleMobileDropdownItemClick = () => {
             </div>
             {helplinePopup && (
               <div className="navbar-dropdown-popup event-pop">
-                <div className="popup-notification" onClick={handleMobileDropdownItemClick}>
+                <div
+                  className="popup-notification"
+                  onClick={handleMobileDropdownItemClick}
+                >
                   Ambulance Call - 102
                 </div>
-                <div className="popup-notification" onClick={handleMobileDropdownItemClick}>
+                <div
+                  className="popup-notification"
+                  onClick={handleMobileDropdownItemClick}
+                >
                   Women Helpline - 1091
                 </div>
-                <div className="popup-notification" onClick={handleMobileDropdownItemClick}>
+                <div
+                  className="popup-notification"
+                  onClick={handleMobileDropdownItemClick}
+                >
                   Child Helpline - 1098
                 </div>
-                <div className="popup-notification" onClick={handleMobileDropdownItemClick}>
+                <div
+                  className="popup-notification"
+                  onClick={handleMobileDropdownItemClick}
+                >
                   Police - 100
                 </div>
-                <div className="popup-notification" onClick={handleMobileDropdownItemClick}>
+                <div
+                  className="popup-notification"
+                  onClick={handleMobileDropdownItemClick}
+                >
                   Disaster Management - 108
                 </div>
               </div>
@@ -295,7 +313,6 @@ const handleMobileDropdownItemClick = () => {
           />
         </div>
       )}
-      
     </div>
   );
 };

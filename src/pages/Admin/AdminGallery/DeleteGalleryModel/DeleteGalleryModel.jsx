@@ -5,7 +5,10 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 const DeleteGalleryModel = (props) => {
 const handleClick = async() =>{
-  axios.delete(`http://localhost:4000/api/gallery/delete/${props.click}`,{withCredentials:true}).then((res) => {
+ axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/gallery/delete/${props.click}`, {
+  withCredentials: true,
+})
+.then((res) => {
     props.fetchData()
     props.onClose()
   }).catch((err) => {

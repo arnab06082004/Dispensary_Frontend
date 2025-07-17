@@ -16,7 +16,6 @@ const ManageMedicine = (props) => {
   const [selectedMedicine, setSelectedMedicine] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
- 
   const handleOpenAddModal = () => {
     setSelectedMedicine(null);
     setIsModalOpen(true);
@@ -27,18 +26,17 @@ const ManageMedicine = (props) => {
     setIsModalOpen(true);
   };
 
-
   const onChange = (value) => {
     setSearchMedicine(value);
   };
 
-  
   const fetchData = async () => {
     try {
       props.showLoader();
       const res = await axios.get(
-        `http://localhost:4000/api/medicine/search-by-name?name=${searchMedicine}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/medicine/search-by-name?name=${searchMedicine}`
       );
+
       setMedicines(res.data.medicine || []);
     } catch (err) {
       toast.error(err?.response?.data?.error || "Failed to fetch medicines");
@@ -47,16 +45,17 @@ const ManageMedicine = (props) => {
     }
   };
 
-  
   useEffect(() => {
     fetchData();
   }, [searchMedicine]);
 
-  
   const handleDelete = async (id) => {
     try {
       props.showLoader();
-      await axios.delete(`http://localhost:4000/api/medicine/delete/${id}`, { withCredentials: true });
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/medicine/delete/${id}`,
+        { withCredentials: true }
+      );
       toast.success("Medicine deleted successfully!");
       fetchData();
     } catch (err) {

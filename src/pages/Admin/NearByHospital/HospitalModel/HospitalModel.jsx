@@ -33,7 +33,7 @@ const HospitalModel = (props) => {
     if (props.editData) {
       axios
         .put(
-          `http://localhost:4000/api/hospital/update/${props.editData._id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/hospital/update/${props.editData._id}`,
           {
             name: formData.name,
             address: formData.address,
@@ -44,7 +44,7 @@ const HospitalModel = (props) => {
         .then((res) => {
           toast.success("Hospital updated Successfully");
           props.fetchData();
-          window.location.reload()
+          window.location.reload();
         })
         .catch((err) => {
           toast.error(err?.data?.response?.error);
@@ -52,11 +52,12 @@ const HospitalModel = (props) => {
         .finally(() => {
           props.hideLoader();
         });
-        return
+      return;
     }
+
     axios
       .post(
-        "http://localhost:4000/api/hospital/add",
+        `${import.meta.env.VITE_BACKEND_URL}/api/hospital/add`,
         {
           name: formData.name,
           address: formData.address,

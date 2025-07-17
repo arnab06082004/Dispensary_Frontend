@@ -19,7 +19,7 @@ const formatData = (data) => {
   useEffect(()=>{
     props.showLoader()
     const fetchData = async() => {
-      axios.get("http://localhost:4000/api/hospital/get").then((response) => {
+axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/hospital/get`).then((response) => {
         
         formatData(response.data.hospital)
       }).catch(err => {

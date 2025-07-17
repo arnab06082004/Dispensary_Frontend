@@ -20,7 +20,7 @@ const ForgotPassword = (props) => {
     if (inpField.email.trim() === "") return toast.error("Please enter email");
     props.showLoader();
     await axios
-      .post("http://localhost:4000/api/auth/send-otp", {
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/send-otp`, {
         email: inpField.email,
       })
       .then((response) => {
@@ -40,7 +40,7 @@ const ForgotPassword = (props) => {
     if (inpField.otp.trim() == "") return toast.error("Please enter OTP");
     props.showLoader();
     await axios
-      .post("http://localhost:4000/api/auth/verify-otp", {
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/verify-otp`, {
         email: inpField.email,
         otp: inpField.otp,
       })
@@ -64,7 +64,8 @@ const ForgotPassword = (props) => {
       return toast.error("Password should be more than 3 characters");
     props.showLoader();
     await axios
-      .post("http://localhost:4000/api/auth/reset-password", {
+     .post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/reset-password`, {
+
         email: inpField.email,
         newPassword: inpField.newPassword,
       })
@@ -73,7 +74,7 @@ const ForgotPassword = (props) => {
         props.onCancel();
       })
       .catch((err) => {
-       toast.error(err.response?.data?.error);
+        toast.error(err.response?.data?.error);
       })
       .finally(() => {
         props.hideLoader();

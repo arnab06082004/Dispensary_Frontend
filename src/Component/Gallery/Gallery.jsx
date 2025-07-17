@@ -8,7 +8,8 @@ const Gallery = (props) => {
   useEffect(()=>{
     props.showLoader()
       const fetchData = async() => {
-        axios.get("http://localhost:4000/api/gallery/get").then((response) => {
+       axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/gallery/get`).then((response) => {
+
           
           setData(response.data.gallery)
         }).catch(err => {

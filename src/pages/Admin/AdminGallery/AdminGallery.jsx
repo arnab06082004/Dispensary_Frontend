@@ -22,7 +22,7 @@ const handelDlt = (id) => {
 
 const fetchData = async() => {
   props.showLoader()
-  axios.get("http://localhost:4000/api/gallery/get").then((res) => {
+axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/gallery/get`).then((res) => {
     setData(res.data.gallery)
   }) .catch((err) => {
           toast.error(err?.data?.response?.error);

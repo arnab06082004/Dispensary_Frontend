@@ -33,8 +33,8 @@ const AddModel = (props) => {
     props.showLoader();
     if (props.editData) {
       axios
-        .put(
-          `http://localhost:4000/api/facility/update/${props.editData._id}`,
+       .put(`${import.meta.env.VITE_BACKEND_URL}/api/facility/update/${props.editData._id}`, 
+
           { title: inpField.title, description: inpField.description },
           { withCredentials: true }
         )
@@ -51,8 +51,8 @@ const AddModel = (props) => {
         });
     } else {
       axios
-        .post(
-          "http://localhost:4000/api/facility/add",
+       .post(`${import.meta.env.VITE_BACKEND_URL}/api/facility/add`,
+
           { title: inpField.title, description: inpField.description },
           { withCredentials: true }
         )

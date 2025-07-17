@@ -43,9 +43,10 @@ const RegisterStudent = (props) => {
     props.showLoader();
     axios
       .get(
-        `http://localhost:4000/api/auth/get-student-by-roll/${searchStudent}`,
-        { withCredentials: true }
-      )
+  `${import.meta.env.VITE_BACKEND_URL}/api/auth/get-student-by-roll/${searchStudent}`,
+  { withCredentials: true }
+)
+
       .then((res) => {
         toast.success(res.data.message);
         setFormData(res.data.student);
@@ -83,7 +84,8 @@ const RegisterStudent = (props) => {
     props.showLoader();
     axios
       .put(
-        `http://localhost:4000/api/auth/update-student/${formData?._id}`,
+  `${import.meta.env.VITE_BACKEND_URL}/api/auth/update-student/${formData?._id}`,
+
         {
           name: formData.name,
           roll: formData.roll,
@@ -121,7 +123,8 @@ const RegisterStudent = (props) => {
     props.showLoader();
     axios
       .post(
-        "http://localhost:4000/api/auth/registerStudentByStaff",
+  `${import.meta.env.VITE_BACKEND_URL}/api/auth/registerStudentByStaff`,
+
         {
            email: formData.email,
           name: formData.name,

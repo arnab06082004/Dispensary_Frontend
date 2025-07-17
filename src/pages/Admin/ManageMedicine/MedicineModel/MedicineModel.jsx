@@ -48,7 +48,8 @@ const MedicineModel = (props) => {
       if (props.fetchMed && props.fetchMed._id) {
         
         await axios.put(
-          `http://localhost:4000/api/medicine/update/${props.fetchMed._id}`,
+  `${import.meta.env.VITE_BACKEND_URL}/api/medicine/update/${props.fetchMed._id}`,
+
           {
             name: formData.medicineName,
             quantity: formData.quantity,
@@ -61,7 +62,8 @@ const MedicineModel = (props) => {
       } else {
         
         await axios.post(
-          "http://localhost:4000/api/medicine/add",
+  `${import.meta.env.VITE_BACKEND_URL}/api/medicine/add`,
+
           {
             name: formData.medicineName,
             quantity: formData.quantity,

@@ -64,10 +64,10 @@ export default function Signup(props) {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/api/auth/register",
-        inpField,
-        { validateStatus: () => true }  
-      );
+  `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
+  inpField,
+  { validateStatus: () => true }
+);
 
       
       if (res.status === 201 || res.status === 200) {

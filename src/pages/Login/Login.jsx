@@ -30,14 +30,14 @@ import ForgotPassword from "../../Component/ForgotPassword/ForgotPassword";
 const theme = createTheme();
 
 export default function Login(props) {
-  const [forgotPass, setForgotPass] = useState(false)
+  const [forgotPass, setForgotPass] = useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [inpField, setInpField] = React.useState({ email: "", password: "" });
   const navigate = useNavigate();
 
   const handleForgot = () => {
-    setForgotPass(prev => !prev)
-  }
+    setForgotPass((prev) => !prev);
+  };
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
@@ -56,22 +56,21 @@ export default function Login(props) {
       props.showLoader?.();
 
       const response = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
         inpField,
         { withCredentials: true }
       );
 
       // Store in localStorage
       if (response.data && response.data.user && response.data.token) {
-  localStorage.setItem("token", response.data.token);
-  localStorage.setItem("user", JSON.stringify(response.data.user));
-  localStorage.setItem("isLogin", true);
-} else {
-  toast.error("Login response missing user data");
-  return;
-}
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("isLogin", true);
+      } else {
+        toast.error("Login response missing user data");
+        return;
+      }
 
-      
       // Call any handler from props
       props.handelLogin?.(true);
 
@@ -84,7 +83,8 @@ export default function Login(props) {
 
       toast.success(response.data.message || "Login successful!");
     } catch (err) {
-      const msg = err?.response?.data?.error || "Login failed. Please try again.";
+      const msg =
+        err?.response?.data?.error || "Login failed. Please try again.";
       toast.error(msg);
     } finally {
       props.hideLoader?.();
@@ -176,15 +176,25 @@ export default function Login(props) {
                 <Link href="/signup" variant="body2">
                   Sign up
                 </Link>
-                <div  style={{cursor:"pointer"}}  onClick={handleForgot} variant="body2">
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={handleForgot}
+                  variant="body2"
+                >
                   Forgot password?
                 </div>
               </Stack>
             </Box>
           </Box>
         </Container>
-       
-        {forgotPass && <ForgotPassword onCancel={handleForgot} showLoader = {props.showLoader} hideLoader = {props.hideLoader} />}
+
+        {forgotPass && (
+          <ForgotPassword
+            onCancel={handleForgot}
+            showLoader={props.showLoader}
+            hideLoader={props.hideLoader}
+          />
+        )}
       </div>
     </ThemeProvider>
   );

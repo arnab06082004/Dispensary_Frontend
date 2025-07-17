@@ -24,8 +24,9 @@ const Report = (props) => {
 
     try {
       const res = await axios.get(
-        `http://localhost:4000/api/medicine/search-by-name?name=${searchMedicineName}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/medicine/search-by-name?name=${searchMedicineName}`
       );
+
       setSuggestions(res.data.medicine || []);
       setDropDown(true);
     } catch (err) {
@@ -72,68 +73,65 @@ const Report = (props) => {
     setSelectedMedicines((prev) => prev.filter((_, i) => i !== index));
   };
 
- const handleSubmit = () => {
-  if (selectedMedicines.length === 0) {
-    toast.error("No medicines selected to submit");
-    return;
-  }
+  const handleSubmit = () => {
+    if (selectedMedicines.length === 0) {
+      toast.error("No medicines selected to submit");
+      return;
+    }
 
-  // Check for empty or invalid required quantity
-  const invalidQuantity = selectedMedicines.find(
-    (item) =>
-      item.requiredQuantity === "" ||
-      item.requiredQuantity === null ||
-      isNaN(Number(item.requiredQuantity)) ||
-      Number(item.requiredQuantity) <= 0
-  );
-
-  if (invalidQuantity) {
-    toast.error(
-      `Please fill all required quantities`
+    // Check for empty or invalid required quantity
+    const invalidQuantity = selectedMedicines.find(
+      (item) =>
+        item.requiredQuantity === "" ||
+        item.requiredQuantity === null ||
+        isNaN(Number(item.requiredQuantity)) ||
+        Number(item.requiredQuantity) <= 0
     );
-    return;
-  }
 
-  // Check for over-request
-  const overRequested = selectedMedicines.find(
-    (item) => Number(item.requiredQuantity) > Number(item.quantityLeft)
-  );
+    if (invalidQuantity) {
+      toast.error(`Please fill all required quantities`);
+      return;
+    }
 
-  if (overRequested) {
-    toast.error(
-      `Requested quantity for "${overRequested.name}" exceeds available stock`
+    // Check for over-request
+    const overRequested = selectedMedicines.find(
+      (item) => Number(item.requiredQuantity) > Number(item.quantityLeft)
     );
-    return;
-  }
 
-  const studentRoll = props?.formData?.roll || "";
-  const studentId = props?.formData?._id || "";
+    if (overRequested) {
+      toast.error(
+        `Requested quantity for "${overRequested.name}" exceeds available stock`
+      );
+      return;
+    }
 
-  if (!studentRoll || !studentId) {
-    toast.error("Student roll or ID is missing. Cannot submit report.");
-    return;
-  }
+    const studentRoll = props?.formData?.roll || "";
+    const studentId = props?.formData?._id || "";
 
-  // Send to backend
-  axios
-    .post(
-      "http://localhost:4000/api/history/add",
-      {
-        roll: studentRoll,
-        student: studentId,
-        medicines: selectedMedicines,
-      },
-      { withCredentials: true }
-    )
-    .then(() => {
-      toast.success("Report submitted successfully!");
-      setSelectedMedicines([]);
-    })
-    .catch((err) => {
-      toast.error(err?.response?.data?.error || "Submission failed");
-    });
-};
+    if (!studentRoll || !studentId) {
+      toast.error("Student roll or ID is missing. Cannot submit report.");
+      return;
+    }
 
+    // Send to backend
+    axios
+      .post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/history/add`,
+        {
+          roll: studentRoll,
+          student: studentId,
+          medicines: selectedMedicines,
+        },
+        { withCredentials: true }
+      )
+      .then(() => {
+        toast.success("Report submitted successfully!");
+        setSelectedMedicines([]);
+      })
+      .catch((err) => {
+        toast.error(err?.response?.data?.error || "Submission failed");
+      });
+  };
 
   return (
     <div>
@@ -203,8 +201,6 @@ const Report = (props) => {
       <div className="modal-submit" onClick={handleSubmit}>
         Submit
       </div>
-
-      
     </div>
   );
 };

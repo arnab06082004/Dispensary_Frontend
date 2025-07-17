@@ -23,7 +23,8 @@ const Facilities = (props) => {
   const fetchData = async () => {
     props.showLoader();
     axios
-      .get("http://localhost:4000/api/facility/get")
+      .get(`${import.meta.env.VITE_BACKEND_URL}/api/facility/get`)
+
       .then((res) => {
         setGetData(res.data.facility);
       })
@@ -45,7 +46,9 @@ const Facilities = (props) => {
 
   const handleDelete = async (id) => {
     axios
-      .delete(`http://localhost:4000/api/facility/delete/${id}`,{withCredentials: true})
+      .delete(`${import.meta.env.VITE_BACKEND_URL}/api/facility/delete/${id}`, {
+        withCredentials: true,
+      })
       .then((res) => {
         toast.success("Facility Deleted Successfully");
         fetchData();
@@ -107,7 +110,6 @@ const Facilities = (props) => {
       </div>
     </div>
   );
-  
 };
 
 export default Facilities;

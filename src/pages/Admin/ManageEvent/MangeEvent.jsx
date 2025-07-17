@@ -12,9 +12,8 @@ const ManageEvent = (props) => {
   const fetchData = async () => {
     try {
       props.showLoader();
-      const response = await axios.get(
-        "http://localhost:4000/api/notification/get"
-      );
+      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/notification/get`);
+
       setEvents(response.data.notif);
     } catch (err) {
       toast.error(err?.response?.data?.error || "Failed to fetch events");
@@ -39,7 +38,7 @@ const ManageEvent = (props) => {
     try {
       props.showLoader();
 
-      await axios.post("http://localhost:4000/api/notification/add", { title });
+await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/notification/add`, { title });
 
       toast.success("Event added successfully!");
       setTitle("");
@@ -52,7 +51,7 @@ const ManageEvent = (props) => {
   };
   const handleDelete = async(id) => {
     props.showLoader()
-    axios.delete(`http://localhost:4000/api/notification/delete/${id}`).then((res) => {
+axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/notification/delete/${id}`).then((res) => {
       toast.success("Event deleted Successfully")
       fetchData()
     }).catch(err => {

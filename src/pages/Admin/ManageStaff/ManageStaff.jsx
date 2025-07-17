@@ -5,7 +5,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 
-
 const ManageStaff = (props) => {
   const [staffForm, setStaffForm] = useState({
     name: "",
@@ -21,9 +20,10 @@ const ManageStaff = (props) => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4000/api/auth/get-staff",
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/get-staff`,
         {}
       );
+
       setStaffs(response.data.staff || []);
     } catch (err) {
       console.error(err.response?.data || err.message);
@@ -43,42 +43,47 @@ const ManageStaff = (props) => {
   };
 
   const handelUpdate = async () => {
-  try {
-    const response = await axios.put(
-      `http://localhost:4000/api/auth/update-staff/${clickEdit?._id}`,
-      staffForm, 
-      { withCredentials: true }
-    );
-    toast.success(response.data.message);
-    setClickEdit(null); 
-    setStaffForm({
-      name: "",
-      email: "",
-      password: "",
-      designation: "",
-      mobileNo: "",
-    }); 
-    fetchData(); 
-  } catch (err) {
-    toast.error("Update Failed");
-  }
-};
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/update-staff/${clickEdit?._id}`,
+        staffForm,
+        { withCredentials: true }
+      );
+
+      toast.success(response.data.message);
+      setClickEdit(null);
+      setStaffForm({
+        name: "",
+        email: "",
+        password: "",
+        designation: "",
+        mobileNo: "",
+      });
+      fetchData();
+    } catch (err) {
+      toast.error("Update Failed");
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    if(clickEdit)
-      return handelUpdate()
-    
-    
-    
+
+    if (clickEdit) return handelUpdate();
+
     props?.showLoader?.();
 
     try {
-      if(staffForm.name.trim() == "" ||staffForm.mobileNo.trim() == "" ||staffForm.email.trim() == "" ||staffForm.password.trim() == "" ||staffForm.designation.trim() == "")
-        return toast.error("Invalid Credentials")
+      if (
+        staffForm.name.trim() == "" ||
+        staffForm.mobileNo.trim() == "" ||
+        staffForm.email.trim() == "" ||
+        staffForm.password.trim() == "" ||
+        staffForm.designation.trim() == ""
+      )
+        return toast.error("Invalid Credentials");
       const response = await axios.post(
-        "http://localhost:4000/api/auth/add-staff",
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/add-staff`,
+
         {
           name: staffForm.name,
           email: staffForm.email,
@@ -106,25 +111,30 @@ const ManageStaff = (props) => {
   };
 
   const handleEdit = (item) => {
-  setClickEdit(item);
-  setStaffForm({
-    name: item.name || "",
-    email: item.email || "",
-    password: "", 
-    designation: item.designation || "",
-    mobileNo: item.mobileNo || "",
-  });
-};
+    setClickEdit(item);
+    setStaffForm({
+      name: item.name || "",
+      email: item.email || "",
+      password: "",
+      designation: item.designation || "",
+      mobileNo: item.mobileNo || "",
+    });
+  };
 
-  const handleDelete = async(item) => {
-      axios.delete(`http://localhost:4000/api/auth/delete-staff/${item}`,{withCredentials: true}).then((response) => {
-        fetchData()
-        toast.success(response.data.message)
-
-      }).catch( err => {
-        toast.error("Failed to delete")
+  const handleDelete = async (item) => {
+    axios
+      .delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/delete-staff/${item}`,
+        { withCredentials: true }
+      )
+      .then((response) => {
+        fetchData();
+        toast.success(response.data.message);
       })
-  }
+      .catch((err) => {
+        toast.error("Failed to delete");
+      });
+  };
 
   return (
     <div className="staff-box">
@@ -145,7 +155,7 @@ const ManageStaff = (props) => {
               </div>
             ))}
         </div>
-        <button type="submit" className="btn" >
+        <button type="submit" className="btn">
           {!clickEdit ? "Add" : "Update"}
         </button>
       </form>
@@ -169,7 +179,6 @@ const ManageStaff = (props) => {
           <div>No staff members found.</div>
         )}
       </div>
-      
     </div>
   );
 };
