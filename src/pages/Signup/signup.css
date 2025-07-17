@@ -1,0 +1,76 @@
+/* Background for the signup page */
+.login-page {
+background: url("https://res.cloudinary.com/mashhuudanny/image/upload/v1739627781/loginLogo_vxibhy.jpg")
+    center center / cover no-repeat;  height: 700px;        
+         /* room for header */
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Signup box styling */
+.MuiBox-root {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+  padding: 24px 20px 32px 20px;   /* extra bottom padding so nothing cuts off */
+  width: 100%;
+  max-width: 400px;
+  margin-top: 20px;
+  box-sizing: border-box;
+}
+
+/* Signup title */
+.MuiTypography-h5 {
+  color: #1a3d53;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+/* Form fields */
+.MuiOutlinedInput-root,
+.MuiTextField-root {
+  background-color: #fff;
+}
+
+/* Button in HIT theme */
+.MuiButton-containedPrimary {
+  background-color: #1a3d53;
+  color: white;
+}
+
+.MuiButton-containedPrimary:hover {
+  background-color: #255674;
+}
+
+/* Links at the bottom */
+.MuiLink-root {
+  color: #1a3d53;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.MuiLink-root:hover {
+  text-decoration: underline;
+}
+
+/* Optional: Checkbox label size and color */
+.MuiFormControlLabel-label {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Responsive adjustments for small screens */
+/* @media (max-width: 400px) {
+  .login-page {
+    padding-top: 40px;
+    height: 450px;
+  }
+  .MuiBox-root {
+    padding: 20px 16px 28px 16px;
+    max-width: 90%;
+  }
+} */

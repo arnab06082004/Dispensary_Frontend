@@ -1,0 +1,64 @@
+.pad {
+  padding: 20px 100px;
+}
+.record{
+    margin-bottom: 30px !important;
+}
+
+.margin {
+  margin-bottom: 25px;
+}
+.m-top{
+    margin-top: 15px !important;
+    padding-top: 10px !important;
+    padding-bottom:   0px;
+}
+
+.record-data-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 0px;
+}
+
+.record-data-block .label {
+  font-weight: 600;
+  color: #255674;
+  font-size: 16px;
+}
+
+.r-d-year {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.record-year {
+  padding: 8px 16px;
+  border: 1px solid #255674;
+  border-radius: 8px;
+  width: fit-content;
+  background-color: #ffffff;
+  color: #255674;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+}
+
+.record-year:hover {
+  background-color: #255674;
+  color: #ffffff;
+}
+
+.record-year.selected {
+  background-color: #255674;
+  color: #ffffff;
+  border-color: #255674;
+}
+
+@media screen and (max-width: 768px) {
+  .pad {
+    padding: 20px;
+  }
+}

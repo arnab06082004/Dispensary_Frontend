@@ -1,0 +1,49 @@
+.record-model{
+    margin-bottom: 20px;
+}
+.r-m-header{
+   
+    display: flex;
+    font-size: 20px;
+    font-weight: 500px;
+    justify-content: space-between;
+    /* padding: 10px; */
+    border-radius: 4px;
+}
+.r-m-date{
+    background-color: #255674;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 500px;
+}
+.r-m-table-header{
+margin-top: 10px;
+background-color: #255674;
+color: white;
+display: flex;
+justify-content: space-between;
+width: 60%;
+padding: 12px;
+border-radius: 5px;
+font-size: 18px;
+}
+.r-m-table-data{
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    width: 60%;
+    box-shadow: rgba(0,0,0,0.16) 0px 3px 6px,rgba(0,0,0,0.23) 0px 3px 6px;
+    margin-top: 10px;
+    padding-bottom: 10px !important;
+}
+.r-m-scroll{
+    max-height: 400px;
+    overflow-y: auto;
+}
+.r-m-table{
+    padding-bottom: 10px;
+    padding-left: 1px;
+}

@@ -1,0 +1,17 @@
+.Gallery{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    
+   
+}
+.G-img-block{
+    height: 250px;
+    width: 300px;
+    cursor: pointer;
+    margin: 5px;
+}
+.G-img{
+    height: 100%;
+    width: 100%;
+}

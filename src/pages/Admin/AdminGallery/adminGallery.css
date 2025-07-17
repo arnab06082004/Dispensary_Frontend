@@ -1,0 +1,48 @@
+.add-btn{
+    margin: 0px 100px;
+    background-color: #255674;
+    padding: 10px 20px;
+    width: fit-content;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 19px;
+    &:hover{
+        background-color:#2384f4 ;
+    }
+}
+.a-margin{
+    margin: 40px 100px;
+    margin-bottom: 60px;
+    
+}
+.a-img{
+    &:hover{
+        filter: brightness(50%);
+    }
+}
+@media (max-width: 768px) {
+  .add-btn {
+    margin: 0 20px;
+    padding: 8px 16px;
+    font-size: 16px;
+  }
+
+  .a-margin {
+    margin: 30px 20px;
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-btn {
+    margin: 0 15px;
+    padding: 7px 14px;
+    font-size: 15px;
+  }
+
+  .a-margin {
+    margin: 20px 15px;
+    margin-bottom: 30px;
+  }
+}

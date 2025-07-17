@@ -1,0 +1,93 @@
+.model{
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+}
+.model-card{
+    width: 50%;
+    height: fit-content;
+    border-radius: 5px;
+    background-color: white;
+    margin-top: 100px;
+    padding: 20px;
+}
+.m-c-header{
+    display: flex;
+    justify-content: space-between;
+}
+.m-c-h-title{
+    font-size: 26px;
+    font-weight: 600;
+    color: #255674;
+}
+.m-c-h-icon{
+    cursor: pointer;
+
+}
+.m-c-content{
+    margin-top: 30px;
+}
+/* Fade-in animation for modal */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.model-card {
+  animation: modalFadeIn 0.3s ease;
+  transition: width 0.3s ease;
+}
+
+/* Tablet responsiveness */
+@media (max-width: 1024px) {
+  .model-card {
+    width: 70%;
+    margin-top: 80px;
+    padding: 18px;
+  }
+
+  .m-c-h-title {
+    font-size: 24px;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .model-card {
+    width: 90%;
+    margin-top: 25vh;
+    padding: 16px;
+  }
+
+  .m-c-h-title {
+    font-size: 22px;
+  }
+
+  .m-c-content {
+    margin-top: 20px;
+  }
+}
+
+/* Very small devices */
+@media (max-width: 480px) {
+  .model-card {
+    width: 95%;
+    margin-top: 25vh;
+    padding: 14px;
+  }
+
+  .m-c-h-title {
+    font-size: 20px;
+  }
+}

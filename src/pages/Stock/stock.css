@@ -1,0 +1,30 @@
+.stock-card {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  width: 80%;
+  padding: 40px;
+  box-sizing: border-box;
+  margin: 40px 100px;
+}
+
+.stock {
+  margin-top: 40px;
+}
+
+/* Responsive for tablets and below */
+@media (max-width: 1024px) {
+  .stock-card {
+    width: 90%;
+    margin: 30px auto;
+    padding: 30px;
+  }
+}
+
+/* Responsive for mobile devices */
+@media (max-width: 600px) {
+  .stock-card {
+    width: 95%;
+    margin: 20px auto;
+    padding: 20px;
+  }
+}

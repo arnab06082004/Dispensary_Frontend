@@ -1,0 +1,158 @@
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 40px 60px;
+  background-color: rgb(26, 61, 83);
+  color: white;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.f-left,
+.f-center,
+.f-right {
+  flex: 1 1 250px;
+  margin: 20px;
+  box-sizing: border-box;
+}
+
+.f-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.f-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 15px;
+  border: 2px solid white;
+  object-fit: cover;
+}
+
+.f-text {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.f-text-sm {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #ddd;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.f-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  border-left: 1px dotted #ccc;
+  border-right: 1px dotted #ccc;
+}
+
+.f-links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.f-link {
+  text-decoration: none;
+  color: white;
+  font-size: 17px;
+  font-weight: 400;
+  padding: 6px 12px;
+  transition: color 0.3s, background-color 0.3s;
+  border-radius: 4px;
+}
+
+.f-link:hover {
+  color: #c0d6e4;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.f-r-name {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.f-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.f-r-date {
+  color: #aaa;
+  font-size: 15px;
+}
+
+/* Tablet adjustments */
+@media (max-width: 900px) {
+  .footer {
+    flex-direction: column;
+    padding: 30px 30px;
+    align-items: center;
+  }
+
+  .f-left,
+  .f-center,
+  .f-right {
+    margin: 15px 0;
+    flex: 1 1 100%;
+    max-width: 500px;
+  }
+
+  .f-center {
+    border: none;
+    padding: 0;
+  }
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .footer {
+    padding: 20px 15px;
+  }
+
+  .f-text {
+    font-size: 20px;
+  }
+
+  .f-text-sm {
+    font-size: 14px;
+  }
+
+  .f-link {
+    font-size: 16px;
+    padding: 8px 16px;
+  }
+
+  .f-r-name {
+    font-size: 18px;
+  }
+
+  .f-r-date {
+    font-size: 14px;
+  }
+
+  .f-logo {
+    width: 80px;
+    height: 80px;
+  }
+}
