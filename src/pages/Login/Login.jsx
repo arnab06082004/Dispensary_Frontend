@@ -96,6 +96,11 @@ export default function Login(props) {
     await handelLogin();
   };
 
+  // Add this function to handle signup navigation
+  const handleSignupClick = () => {
+    navigate("/signup");
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div className="login-page">
@@ -173,7 +178,12 @@ export default function Login(props) {
               </Button>
 
               <Stack direction="row" justifyContent="space-between">
-                <Link href="/signup" variant="body2">
+                {/* Fixed: Use onClick instead of href */}
+                <Link 
+                  onClick={handleSignupClick}
+                  variant="body2"
+                  sx={{ cursor: 'pointer' }}
+                >
                   Sign up
                 </Link>
                 <div

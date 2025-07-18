@@ -64,12 +64,11 @@ export default function Signup(props) {
 
     try {
       const res = await axios.post(
-  `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
-  inpField,
-  { validateStatus: () => true }
-);
+        `${import.meta.env.VITE_BACKEND_URL}/api/auth/register`,
+        inpField,
+        { validateStatus: () => true }
+      );
 
-      
       if (res.status === 201 || res.status === 200) {
         toast.success(res.data?.message || "User registered successfully");
         setInpField({ name: "", email: "", password: "", roll: "" });
@@ -84,6 +83,11 @@ export default function Signup(props) {
     } finally {
       props.hideLoader?.();
     }
+  };
+
+  // Add this function to handle login navigation
+  const handleLoginClick = () => {
+    navigate("/login");
   };
 
   return (
@@ -189,7 +193,12 @@ export default function Signup(props) {
                 Register
               </Button>
               <Stack direction="row" justifyContent="space-between">
-                <Link href="/login" variant="body2">
+                {/* Fixed: Use onClick instead of href */}
+                <Link 
+                  onClick={handleLoginClick}
+                  variant="body2"
+                  sx={{ cursor: 'pointer' }}
+                >
                   Already have an account? Login
                 </Link>
               </Stack>
