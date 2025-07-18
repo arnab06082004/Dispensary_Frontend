@@ -21,17 +21,25 @@ const DeleteGalleryModel = (props) => {
         { withCredentials: true }
       );
 
-      toast.success("Image deleted successfully");
+      console.log("Delete response:", response.data); // Debug log
+      toast.success(response.data.message || "Image deleted successfully");
       
       // Refresh the gallery data
-      await props.fetchData();
+      props.fetchData();
       
       // Close the modal
       props.onClose();
 
     } catch (err) {
-      console.error("Error deleting:", err);
-      toast.error(err?.response?.data?.error || "Failed to delete image");
+      console.error("Delete error:", err); // Debug log
+      console.error("Error response:", err.response); // Debug log
+      
+      // Fixed error path: err.response.data.error instead of err.data.response.error
+      const errorMessage = err?.response?.data?.error || 
+                          err?.response?.data?.message || 
+                          "Failed to delete image";
+      
+      toast.error(errorMessage);
     } finally {
       setDeleting(false);
     }

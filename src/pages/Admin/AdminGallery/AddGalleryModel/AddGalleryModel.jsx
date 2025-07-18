@@ -28,35 +28,38 @@ const AddGalleryModel = (props) => {
     }
 
     setUploading(true);
-
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-    formData.append("upload_preset", UPLOAD_PRESET);
+    props?.showLoader?.();
 
     try {
-      // Upload to Cloudinary
+      // Step 1: Upload to Cloudinary
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("upload_preset", UPLOAD_PRESET);
+
+      console.log("Uploading to Cloudinary..."); // Debug log
       const cloudinaryResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
         formData
       );
 
       const uploadedUrl = cloudinaryResponse.data.secure_url;
+      console.log("Cloudinary upload successful:", uploadedUrl); // Debug log
 
-      // Save to your backend
-      props?.showLoader?.();
-      
+      // Step 2: Save to your backend
+      console.log("Saving to backend..."); // Debug log
       const backendResponse = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/gallery/add`,
         { link: uploadedUrl },
         { withCredentials: true }
       );
 
+      console.log("Backend save successful:", backendResponse.data); // Debug log
       toast.success("Image added successfully");
-      
-      // Refresh the gallery data
+
+      // Step 3: Refresh the gallery data
       await props.fetchData();
-      
-      // Close the modal
+
+      // Step 4: Close the modal after a short delay
       setTimeout(() => {
         setUploading(false);
         setSelectedFile(null);
@@ -65,9 +68,25 @@ const AddGalleryModel = (props) => {
       }, 1000);
 
     } catch (error) {
-      console.error("Error uploading:", error);
-      toast.error(error?.response?.data?.error || "Upload failed! Try again.");
+      console.error("Upload error:", error); // Debug log
+      console.error("Error response:", error.response); // Debug log
+
       setUploading(false);
+
+      // Check if it's a Cloudinary error or backend error
+      if (error.response) {
+        // Server responded with error status
+        const errorMessage = error?.response?.data?.error || 
+                            error?.response?.data?.message || 
+                            `Upload failed: ${error.response.status}`;
+        toast.error(errorMessage);
+      } else if (error.request) {
+        // Request was made but no response received
+        toast.error("Network error. Please check your connection.");
+      } else {
+        // Something else happened
+        toast.error("Upload failed. Please try again.");
+      }
     } finally {
       props?.hideLoader?.();
     }

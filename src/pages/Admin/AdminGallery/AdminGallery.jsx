@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import './adminGallery.css'
 import { Link } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -22,11 +22,13 @@ const AdminGallery = (props) => {
     setDeleteModel(prev => !prev)
   }
 
-  // Use useCallback to prevent unnecessary re-renders
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     try {
       props?.showLoader?.();
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/gallery/get`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/gallery/get`,
+        { withCredentials: true }
+      );
       setData(response.data.gallery || []);
     } catch (err) {
       console.error("Error fetching gallery:", err);
@@ -34,11 +36,11 @@ const AdminGallery = (props) => {
     } finally {
       props?.hideLoader?.();
     }
-  }, [props]);
+  }
 
   useEffect(() => {
     fetchData()
-  }, [fetchData])
+  }, [])
 
   return (
     <div className='admin-gallery'>
