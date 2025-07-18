@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./manageStaff.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -17,7 +17,8 @@ const ManageStaff = (props) => {
   const [staffs, setStaffs] = useState([]);
   const [clickEdit, setClickEdit] = useState(null);
 
-  const fetchData = async () => {
+  // Use useCallback to memoize fetchData
+  const fetchData = useCallback(async () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/api/auth/get-staff`,
@@ -28,11 +29,11 @@ const ManageStaff = (props) => {
     } catch (err) {
       console.error(err.response?.data || err.message);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -73,17 +74,20 @@ const ManageStaff = (props) => {
     props?.showLoader?.();
 
     try {
+      // Use strict equality (===) instead of loose equality (==)
       if (
-        staffForm.name.trim() == "" ||
-        staffForm.mobileNo.trim() == "" ||
-        staffForm.email.trim() == "" ||
-        staffForm.password.trim() == "" ||
-        staffForm.designation.trim() == ""
-      )
-        return toast.error("Invalid Credentials");
+        staffForm.name.trim() === "" ||
+        staffForm.mobileNo.trim() === "" ||
+        staffForm.email.trim() === "" ||
+        staffForm.password.trim() === "" ||
+        staffForm.designation.trim() === ""
+      ) {
+        toast.error("Invalid Credentials");
+        return;
+      }
+
       const response = await axios.post(
         `${import.meta.env.VITE_BACKEND_URL}/api/auth/add-staff`,
-
         {
           name: staffForm.name,
           email: staffForm.email,
@@ -93,6 +97,7 @@ const ManageStaff = (props) => {
         },
         { withCredentials: true }
       );
+      
       toast.success("Password sent to your staffs email Id ");
       fetchData();
       setStaffForm({
@@ -122,38 +127,40 @@ const ManageStaff = (props) => {
   };
 
   const handleDelete = async (item) => {
-    axios
-      .delete(
+    try {
+      const response = await axios.delete(
         `${import.meta.env.VITE_BACKEND_URL}/api/auth/delete-staff/${item}`,
         { withCredentials: true }
-      )
-      .then((response) => {
-        fetchData();
-        toast.success(response.data.message);
-      })
-      .catch((err) => {
-        toast.error("Failed to delete");
-      });
+      );
+      fetchData();
+      toast.success(response.data.message);
+    } catch (err) {
+      toast.error("Failed to delete");
+    }
   };
+
+  // Memoize the fields array to prevent unnecessary re-renders
+  const formFields = React.useMemo(() => {
+    return ["name", "email", "password", "designation", "mobileNo"]
+      .filter((field) => !(field === "password" && clickEdit !== null));
+  }, [clickEdit]);
 
   return (
     <div className="staff-box">
       <form className="from" onSubmit={handleSubmit}>
         <div className="from-divs">
-          {["name", "email", "password", "designation", "mobileNo"]
-            .filter((field) => !(field === "password" && clickEdit !== null))
-            .map((field) => (
-              <div className="from-div" key={field}>
-                <input
-                  type="text"
-                  name={field}
-                  className="from-input"
-                  placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                  value={staffForm[field]}
-                  onChange={handleChange}
-                />
-              </div>
-            ))}
+          {formFields.map((field) => (
+            <div className="from-div" key={field}>
+              <input
+                type={field === "password" ? "password" : "text"}
+                name={field}
+                className="from-input"
+                placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                value={staffForm[field]}
+                onChange={handleChange}
+              />
+            </div>
+          ))}
         </div>
         <button type="submit" className="btn">
           {!clickEdit ? "Add" : "Update"}
@@ -163,7 +170,7 @@ const ManageStaff = (props) => {
       <div className="list-staffs">
         {staffs.length > 0 ? (
           staffs.map((staff, index) => (
-            <div className="list-staff" key={index}>
+            <div className="list-staff" key={staff._id || index}>
               <div>{staff.name}</div>
               <div className="l-s-btns">
                 <div onClick={() => handleEdit(staff)}>

@@ -3,10 +3,9 @@ import axios from "axios";
 import "./addGalleryModel.css";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CircularProgress from "@mui/material/CircularProgress";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const AddGalleryModel = (props) => {
-  const [data, setData] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [uploading, setUploading] = useState(false);
@@ -23,7 +22,10 @@ const AddGalleryModel = (props) => {
   };
 
   const handleUpload = async () => {
-    if (!selectedFile) return;
+    if (!selectedFile) {
+      toast.error("Please select a file first");
+      return;
+    }
 
     setUploading(true);
 
@@ -32,43 +34,42 @@ const AddGalleryModel = (props) => {
     formData.append("upload_preset", UPLOAD_PRESET);
 
     try {
-      const response = await axios.post(
+      // Upload to Cloudinary
+      const cloudinaryResponse = await axios.post(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
         formData
       );
 
-      const uploadedUrl = response.data.secure_url;
-      setData(response.data.secure_url);
+      const uploadedUrl = cloudinaryResponse.data.secure_url;
 
-      props.showLoader();
-      await axios
-        .post(
-          `${import.meta.env.VITE_BACKEND_URL}/api/gallery/add`,
-          { link: uploadedUrl },
-          { withCredentials: true }
-        )
-        .then((res) => {
-          toast.success("Image added successfully");
-          props.fetchData();
-        })
-        .catch((err) => {
-          toast.error(err?.data?.response?.error);
-        })
-        .finally(() => {
-          props.hideLoader();
-        });
+      // Save to your backend
+      props?.showLoader?.();
+      
+      const backendResponse = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/gallery/add`,
+        { link: uploadedUrl },
+        { withCredentials: true }
+      );
 
-      // Small delay for UX
+      toast.success("Image added successfully");
+      
+      // Refresh the gallery data
+      await props.fetchData();
+      
+      // Close the modal
       setTimeout(() => {
         setUploading(false);
         setSelectedFile(null);
         setPreviewUrl(null);
-        props.onClose(); //
+        props.onClose();
       }, 1000);
+
     } catch (error) {
       console.error("Error uploading:", error);
-      alert("Upload failed! Try again.");
+      toast.error(error?.response?.data?.error || "Upload failed! Try again.");
       setUploading(false);
+    } finally {
+      props?.hideLoader?.();
     }
   };
 
